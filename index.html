@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Kendo Social Center - chuyển tiếp đăng nhập TikTok</title>
+</head>
+<body style="font-family:system-ui,sans-serif;max-width:560px;margin:40px auto;padding:0 16px">
+<h1 style="font-size:20px">Đang chuyển về Kendo Social Center…</h1>
+<p>Trang này chỉ chuyển tiếp kết quả đăng nhập TikTok về máy tính của chủ doanh nghiệp. Trang không lưu và không gửi dữ liệu đi đâu khác.</p>
+<p id="manual" style="display:none"><a id="lnk" href="#">Bấm vào đây nếu trang không tự chuyển.</a></p>
+<script>
+  // Chỉ chuyển tới địa chỉ cố định trên chính máy của chủ (không nhận địa chỉ đích từ bên ngoài).
+  var target = "https://localhost:3443/api/social/oauth/tiktok/callback" + window.location.search;
+  document.getElementById("lnk").href = target;
+  document.getElementById("manual").style.display = "block";
+  window.location.replace(target);
+</script>
+</body>
+</html>
