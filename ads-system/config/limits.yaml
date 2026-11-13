@@ -1,0 +1,46 @@
+# Hạn mức cứng cho hệ thống quảng cáo tự động (đơn vị: VND).
+# Guardrail PHẢI đọc file này trước mọi lệnh ghi lên Meta/TikTok.
+# Giá trị khởi điểm đề xuất, cần chỉnh theo số liệu thật.
+
+tong_ngan_sach_thang: 15000000
+tran_cung_thang: 16000000        # cũng đặt spending limit này trong tài khoản quảng cáo
+tran_chi_tieu_ngay_toan_he_thong: 600000
+
+ranh_gioi_thay_doi:
+  tang_ngan_sach_toi_da_moi_lan_pct: 20
+  tang_toi_da_moi_ngay_pct: 20
+  khong_sua_sau_khi_doi_gan_nhat_gio: 48
+  tao_moi_mac_dinh_trang_thai: PAUSED
+
+nganh:
+  spa:
+    ngan_sach_ngay: 200000
+    nen_tang: [meta]
+    muc_tieu: leads_hoac_messages
+    cpl_max: 225000               # giả định, thay bằng số thật
+    che_do_duyet: nguoi_duyet_moi_creative   # 8 tuần đầu
+  noi_that:
+    ngan_sach_ngay: 200000
+    nen_tang: [meta]
+    muc_tieu: leads_hoac_messages
+    cpl_max: 250000               # giả định, thay bằng số thật
+    che_do_duyet: tu_dong_trong_han_muc
+  tiktok_thu_nghiem:
+    ngan_sach_ngay: 100000
+    bat_khi: co_it_nhat_5_video_dat_chuan
+    ngung_neu_khong_co_lead_dat_chuan_sau_ngay: 21
+
+cau_truc:
+  campaign_toi_da_moi_nganh: 1
+  adset_toi_da_moi_campaign: 2
+  creative_concept_toi_thieu_moi_adset: 4
+
+canh_bao_va_dung_khan_cap:
+  chi_tieu_ngay_vuot_pct_so_voi_ke_hoach: 150   # vượt → dừng tất cả + báo động
+  nguoi_nhan_bao_dong: ["telegram_hoac_zalo_chu_doanh_nghiep"]
+
+phai_duyet_bang_nguoi:
+  - tang_han_muc_tong
+  - doi_phuong_thuc_thanh_toan_hoac_tai_khoan
+  - xoa_chien_dich
+  - creative_spa_co_anh_truoc_sau_hoac_cam_ket_ket_qua

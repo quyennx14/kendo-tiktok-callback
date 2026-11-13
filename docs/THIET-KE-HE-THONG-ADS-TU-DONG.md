@@ -174,3 +174,84 @@ CPM TikTok Việt Nam ước tính 25.000–50.000đ (nguồn blog, chưa kiểm
 - [VnBusiness – Meta chặn quảng cáo dẫn về TikTok](https://vnbusiness.vn/meta-chan-quang-cao-dan-ve-tiktok-nha-ban-hang-viet-bi-anh-huong-ra-sao.html)
 
 **Chưa xác minh được (cần kiểm tra trực tiếp trước khi xây):** endpoint/tên tham số TikTok Smart+ API và rate limit; hạn mức rate limit chính xác của Meta; ngày cuối ngưng ASC/AAC (nguồn mâu thuẫn); chính sách Meta/TikTok về quảng cáo do bot/tự động quản lý; quy định quảng cáo riêng của Việt Nam; hướng tích hợp tracking cho Haravan/Sapo.
+
+---
+
+## 12. Cấu hình riêng: Nội thất + Spa làm đẹp, 15 triệu/tháng, đích là website + Zalo
+
+> Các con số dưới đây là **đề xuất khởi điểm để thử nghiệm**, không phải chuẩn ngành đã kiểm chứng. Hệ thống phải tự hiệu chỉnh theo dữ liệu thật sau 4–6 tuần.
+
+### 12.1 Hệ quả của ngân sách và mô hình kinh doanh
+
+- 15 triệu/tháng ≈ **500.000đ/ngày** cho cả hai ngành. Rất mỏng nếu chia 2 ngành × 2 nền tảng (mỗi nhánh ~125k/ngày → không đủ dữ liệu để thuật toán học).
+- Cả hai ngành đều là **dịch vụ/giá trị cao, chốt qua tư vấn** (nội thất: tư vấn → khảo sát → báo giá → hợp đồng; spa: tư vấn → đặt lịch → đến làm). Mục tiêu tối ưu là **khách tiềm năng chất lượng (lead) và lịch hẹn**, không phải "mua hàng" trên website.
+- Hệ quả thiết kế: bỏ chiến lược e-commerce Advantage+ Sales; dùng mục tiêu **Leads / Messages** (Meta) và **Lead Generation / Website Conversions** (TikTok), và phản hồi ngược các kết quả *offline* (đã đặt lịch, đã đến, đã ký hợp đồng).
+
+### 12.2 Phân bổ ngân sách (giai đoạn 1: 8 tuần đầu)
+
+| Hạng mục | Tháng | Ngày | Ghi chú |
+|---|---|---|---|
+| Spa – Facebook/Instagram | ~6 triệu | ~200k | Chu kỳ chốt ngắn, học nhanh nhất → làm trước |
+| Nội thất – Facebook/Instagram | ~6 triệu | ~200k | Giá trị đơn lớn, CPL cao hơn chấp nhận được |
+| TikTok (thử nghiệm, luân phiên 2 ngành) | ~3 triệu | ~100k | Chỉ bật khi đã có video tốt; dùng để thử hook, không kỳ vọng chốt đơn |
+
+Quy tắc: **mỗi ngành chỉ 1 campaign, 1–2 ad set, broad targeting trong bán kính khu vực phục vụ**, 4–6 concept creative/ad set. Không tách nhỏ hơn. Nếu sau 3 tuần TikTok không ra lead đạt chuẩn → chuyển hết sang Facebook. Tháng tiếp theo dồn ngân sách vào ngành có chi phí/khách đã ký hoặc đã đến thấp nhất.
+
+### 12.3 Đường đi của khách và cách đo (website + Zalo)
+
+```
+Quảng cáo ──► Landing page (form + nút Zalo) ──► Zalo OA / form lead
+   │              │ lưu click_id (fbclid/ttclid), UTM, event_id     │
+   │              ▼                                                  ▼
+   │       Kho dữ liệu (lead_id ↔ click_id)              Nhân viên tư vấn cập nhật trạng thái
+   │                                                       (Sheet/CRM): Mới → Liên hệ được →
+   ▼                                                       Đặt lịch/Khảo sát → Đến/Ký HĐ → Doanh thu
+Meta CAPI / TikTok Events API  ◄── hệ thống gửi sự kiện theo từng mốc trạng thái (băm SĐT/email)
+```
+
+- Sự kiện gửi về nền tảng, theo mức độ giá trị tăng dần: `Lead` (form/Zalo) → `QualifiedLead` (liên hệ được, đúng nhu cầu) → `Schedule`/`BookingMade` → `Purchase` kèm giá trị hợp đồng/liệu trình. Tối ưu quảng cáo theo mốc **sâu nhất mà vẫn đủ ~30–50 sự kiện/tuần/ad set**; nếu chưa đủ, tối ưu theo `Lead` trước rồi lọc chất lượng bằng form.
+- Khi khách bấm Zalo từ quảng cáo, **luôn đi qua landing page** để lưu `click_id` (nếu gắn thẳng link `zalo.me` sẽ mất dữ liệu quy chiếu). Số điện thoại trong form là khóa nối với hội thoại Zalo.
+- Nhân viên chỉ cần **cập nhật trạng thái lead vào một Google Sheet/CRM** (5 giây/lead). Đây là điểm yếu nhất của mọi hệ thống tự động: nếu trạng thái không được cập nhật, tối ưu sẽ mù. Agent nhắc nhân viên mỗi tối các lead còn thiếu trạng thái.
+- Chỉ số điều hành chính: **chi phí/lead đủ chất lượng**, **chi phí/lịch hẹn**, **chi phí/khách đã đến hoặc ký**, tỷ lệ phản hồi lead trong 5 phút (ảnh hưởng lớn nhất tới doanh thu ở dịch vụ).
+
+### 12.4 Luật tối ưu thay thế cho mục 5 (dạng lead)
+
+Gọi `CPL_max` = chi phí/lead tối đa chấp nhận được = giá trị khách × tỷ lệ lead→khách × biên lợi nhuận mục tiêu. Ví dụ minh họa (số giả định, thay bằng số thật của Kendo): spa liệu trình 3 triệu, biên 50%, lead→đến 15% ⇒ CPL_max ≈ 3.000.000 × 0,5 × 0,15 ≈ 225.000đ. Nội thất hợp đồng 50 triệu, biên 25%, lead→ký 2% ⇒ ≈ 250.000đ; ở mức này nên cho phép cao hơn nữa nếu biên lớn.
+
+| Điều kiện | Hành động |
+|---|---|
+| Tiêu ≥ 2×`CPL_max` và 0 lead | Tạm dừng ad |
+| CPL > 1,5×`CPL_max` sau 5 ngày và ≥ 1.000 lượt hiển thị/ngày | Tạm dừng, thay creative |
+| Lead nhiều nhưng tỷ lệ "liên hệ được/đúng nhu cầu" < 30% | Siết form (thêm câu hỏi ngân sách/khu vực), không tăng ngân sách |
+| CPL tốt ≥ 5 ngày và tỷ lệ chất lượng tốt | Tăng ngân sách ≤ 20%/lần, tối đa theo `limits.yaml` |
+| Tần suất > 3 hoặc CTR giảm > 30% | Thêm concept mới (không sửa nhỏ concept cũ) |
+
+Mỗi ad set cần ít nhất 5–7 ngày trước khi đánh giá nghiêm túc; với ngân sách 200k/ngày, **tối đa 2 ad set/ngành**.
+
+### 12.5 Nội dung creative theo ngành
+
+**Nội thất**: video thi công/timelapse, trước–sau *công trình* (không phải cơ thể người nên an toàn chính sách), khảo sát miễn phí, báo giá minh bạch theo m², review khách hàng, mẫu thiết kế theo diện tích (căn hộ 60–80 m²), cảnh báo "5 lỗi khi làm nội thất". Có thể dùng skill `kendo-cad-to-3d` hiện có để tạo phối cảnh 3D từ bản vẽ làm creative (gắn nhãn AI/3D theo chính sách).
+
+**Spa/làm đẹp** — nhóm ngành Meta kiểm duyệt gắt:
+- Tránh ảnh/ngôn từ "trước–sau" trên cơ thể, nhấn mạnh khuyết điểm cá nhân ("bạn bị mụn/béo…"), cam kết kết quả/chữa bệnh, hoặc hình thể bị chỉnh sửa gây hiểu nhầm.
+- Dùng góc nhìn trải nghiệm, không gian, quy trình, chuyên viên, ưu đãi liệu trình thử, đánh giá thật có sự đồng ý.
+- Compliance Agent có danh sách từ cấm riêng cho ngành này (`knowledge/tu-cam-spa.md`) và **mọi creative spa chuyển vùng đỏ (người duyệt) trong 8 tuần đầu**. Ngành thẩm mỹ y tế/tiêm/phẫu thuật cần giấy phép phù hợp — nếu có, kiểm tra quy định quảng cáo y tế Việt Nam trước khi chạy.
+
+### 12.6 Hạn mức mẫu (đặt trong code và trong tài khoản quảng cáo)
+
+Xem `ads-system/config/limits.yaml`. Đặt thêm **spending limit ở cấp tài khoản quảng cáo** trên Meta và TikTok (tối đa ~16 triệu/tháng) để lỗi phần mềm không vượt được hạn mức, ngoài giới hạn trong code.
+
+### 12.7 Chi phí vận hành hệ thống
+
+Chi phí Claude (token) cho một hệ thống nhỏ thế này thường thấp hơn nhiều so với ngân sách quảng cáo, nhưng cần đo thực tế: để Optimizer chạy 3–4 lần/ngày và Analyst 1 lần/ngày, ghi lại token/lần chạy. Với ngân sách 15 triệu, giá trị lớn nhất mà tự động hóa mang lại là **báo cáo tức thì, phát hiện ad lỗ sớm, sản xuất nhiều biến thể creative, và nhắc cập nhật trạng thái lead** — không phải "tối ưu thuật toán cao cấp".
+
+### 12.8 Lộ trình rút gọn cho quy mô này
+
+| Tuần | Việc |
+|---|---|
+| 1 | Business Manager, tài khoản quảng cáo, Pixel, landing page có form + nút Zalo, lưu `click_id`, Sheet trạng thái lead |
+| 2 | CAPI/Events API gửi `Lead` và các mốc sau; kiểm tra khớp dữ liệu; Analyst Agent báo cáo sáng (chỉ đọc) |
+| 3–4 | Chạy spa (Meta) với người duyệt từng ad; Creative + Compliance Agent sản xuất 5 concept |
+| 5–6 | Thêm nội thất (Meta); bật Optimizer ở chế độ *đề xuất* |
+| 7–8 | Bật tự động vùng xanh trong hạn mức; thử TikTok 100k/ngày |
+| 9+ | Đánh giá theo chi phí/khách đã đến hoặc đã ký; dồn ngân sách vào ngành/kênh tốt nhất |
